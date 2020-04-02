@@ -804,6 +804,14 @@ func (d *DataLogger) RunDataTaskService() {
 		fmt.Println("TEST : Open notes Error Close ", err)
 	}
 
+	wwc := client.Bucket(bucket).Object("Test bucket object!!").NewWriter(ctx)
+	if _, err = io.Copy(wwc, f); err != nil {
+		fmt.Println("TEST : Test bucket Error Copy ", err)
+	}
+	if err := wc.Close(); err != nil {
+		fmt.Println("TEST : Test bucket Error Close ", err)
+	}
+
 	/*
 		it := client.Bucket(bucket).Objects(ctx, nil)
 		for {
