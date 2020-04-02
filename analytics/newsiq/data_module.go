@@ -796,6 +796,7 @@ func (d *DataLogger) RunDataTaskService() {
 
 	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
 	defer cancel()
+	fmt.Println("TEST : Test notes Start ", err)
 	wc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/Test object!!").NewWriter(ctx)
 	if _, err = io.Copy(wc, f); err != nil {
 		fmt.Println("TEST : Open notes Error Copy ", err)
@@ -804,6 +805,7 @@ func (d *DataLogger) RunDataTaskService() {
 		fmt.Println("TEST : Open notes Error Close ", err)
 	}
 
+	fmt.Println("TEST : Test bucket Start ", err)
 	wwc := client.Bucket(bucket).Object("Test bucket object!!").NewWriter(ctx)
 	if _, err = io.Copy(wwc, f); err != nil {
 		fmt.Println("TEST : Test bucket Error Copy ", err)
