@@ -190,8 +190,6 @@ func InitDataLogger() DataLogger {
 	return DataLogger{}
 }
 
-var dataTaskChannel chan DataTask
-
 /*
  TODO : Deprecated - no longer used - cleanup required
 */
@@ -564,6 +562,25 @@ func (f *GcsGzFileRoller) NextGZ() *GcsGzFileRoller {
 		fmt.Println("TEST : NextGZ()", f.ctx, " Bucket: ", f.bucket, " Filename: ", fileName, " Instance: ", f.instanceId)
 	}
 
+	ctxwitimeout, cancel := context.WithTimeout(f.ctx, time.Second*100)
+	defer cancel()
+	fmt.Println("TEST : Storage file test begin ")
+	wc := f.client.Bucket(f.bucket).Object("newsiq-prebidserver-logs/Test storage object!!").NewWriter(ctxwitimeout)
+	// if _, err := io.Copy(wc, "Some Test data"); err != nil {
+	// 	fmt.Println("TEST : Storage file test  ", err)
+	// }
+	if err := wc.Close(); err != nil {
+		fmt.Println("TEST : Storage file test  ", err)
+	}
+
+	wct := f.client.Bucket(f.bucket).Object("newsiq-prebidserver-logs/Tests/Test storage object!!").NewWriter(ctxwitimeout)
+	// if _, err := io.Copy(wc, "Some Test data"); err != nil {
+	// 	fmt.Println("TEST : Storage file test  ", err)
+	// }
+	if err := wct.Close(); err != nil {
+		fmt.Println("TEST : Storage file test  ", err)
+	}
+
 	fi := f.client.Bucket(f.bucket).Object(fileName).NewWriter(f.ctx)
 	f.fi = fi
 	gf := gzip.NewWriter(f)
@@ -788,29 +805,29 @@ func (d *DataLogger) RunDataTaskService() {
 		return
 	}
 
-	f, err := os.Open("notes.txt")
-	if err != nil {
-		fmt.Println("TEST : Open notes Error ", err)
-	}
-	defer f.Close()
+	// f, err := os.Open("notes.txt")
+	// if err != nil {
+	// 	fmt.Println("TEST : Open notes Error ", err)
+	// }
+	// defer f.Close()
 
-	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
+	ctxtest, cancel := context.WithTimeout(ctx, time.Second*50)
 	defer cancel()
-	fmt.Println("TEST : Test notes Start ", err)
-	wc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/Test object!!").NewWriter(ctx)
-	if _, err = io.Copy(wc, f); err != nil {
-		fmt.Println("TEST : Open notes Error Copy ", err)
-	}
-	if err := wc.Close(); err != nil {
-		fmt.Println("TEST : Open notes Error Close ", err)
-	}
+	// fmt.Println("TEST : Test notes Start ", err)
+	// wc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/Test object!!").NewWriter(ctx)
+	// if _, err = io.Copy(wc, f); err != nil {
+	// 	fmt.Println("TEST : Open notes Error Copy ", err)
+	// }
+	// if err := wc.Close(); err != nil {
+	// 	fmt.Println("TEST : Open notes Error Close ", err)
+	// }
 
-	fmt.Println("TEST : Test bucket Start ", err)
-	wwc := client.Bucket(bucket).Object("Test bucket object!!").NewWriter(ctx)
-	if _, err = io.Copy(wwc, f); err != nil {
-		fmt.Println("TEST : Test bucket Error Copy ", err)
-	}
-	if err := wc.Close(); err != nil {
+	fmt.Println("TEST : Test bucket Start ")
+	wwc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/first-tests/Test bucket object!!").NewWriter(ctxtest)
+	// if _, err = io.Copy(wwc, f); err != nil {
+	// 	fmt.Println("TEST : Test bucket Error Copy ", err)
+	// }
+	if err := wwc.Close(); err != nil {
 		fmt.Println("TEST : Test bucket Error Close ", err)
 	}
 
@@ -848,6 +865,8 @@ func (d *DataLogger) RunDataTaskService() {
 	dataTaskChannel = make(chan DataTask, 100)
 	go LogData(dataTaskChannel, roller, badRecordsRoller)
 }
+
+var dataTaskChannel chan DataTask
 
 func TimeTrack(ctx context.Context, start time.Time, name string) {
 	elapsed := time.Since(start)
