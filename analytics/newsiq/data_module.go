@@ -562,25 +562,26 @@ func (f *GcsGzFileRoller) NextGZ() *GcsGzFileRoller {
 		fmt.Println("TEST : NextGZ()", f.ctx, " Bucket: ", f.bucket, " Filename: ", fileName, " Instance: ", f.instanceId)
 	}
 
-	ctxwitimeout, cancel := context.WithTimeout(f.ctx, time.Second*100)
-	defer cancel()
-	fmt.Println("TEST : Storage file test begin ")
-	wc := f.client.Bucket(f.bucket).Object("newsiq-prebidserver-logs/Test storage object!!").NewWriter(ctxwitimeout)
-	// if _, err := io.Copy(wc, "Some Test data"); err != nil {
-	// 	fmt.Println("TEST : Storage file test  ", err)
-	// }
-	if err := wc.Close(); err != nil {
-		fmt.Println("TEST : Storage file test  ", err)
-	}
+	/*
+		ctxwitimeout, cancel := context.WithTimeout(f.ctx, time.Second*100)
+		defer cancel()
+		fmt.Println("TEST : Storage file test begin ")
+		wc := f.client.Bucket(f.bucket).Object("newsiq-prebidserver-logs/Test storage object!!").NewWriter(ctxwitimeout)
+		// if _, err := io.Copy(wc, "Some Test data"); err != nil {
+		// 	fmt.Println("TEST : Storage file test  ", err)
+		// }
+		if err := wc.Close(); err != nil {
+			fmt.Println("TEST : Storage file test  ", err)
+		}
 
-	wct := f.client.Bucket(f.bucket).Object("newsiq-prebidserver-logs/Tests/Test storage object!!").NewWriter(ctxwitimeout)
-	// if _, err := io.Copy(wc, "Some Test data"); err != nil {
-	// 	fmt.Println("TEST : Storage file test  ", err)
-	// }
-	if err := wct.Close(); err != nil {
-		fmt.Println("TEST : Storage file test  ", err)
-	}
-
+		wct := f.client.Bucket(f.bucket).Object("newsiq-prebidserver-logs/Tests/Test storage object!!").NewWriter(ctxwitimeout)
+		// if _, err := io.Copy(wc, "Some Test data"); err != nil {
+		// 	fmt.Println("TEST : Storage file test  ", err)
+		// }
+		if err := wct.Close(); err != nil {
+			fmt.Println("TEST : Storage file test  ", err)
+		}
+	*/
 	fi := f.client.Bucket(f.bucket).Object(fileName).NewWriter(f.ctx)
 	f.fi = fi
 	gf := gzip.NewWriter(f)
@@ -607,10 +608,10 @@ func (f *GcsGzFileRoller) WriteGZ(logData *LogPrebidEvents, brf *GcsGzFileRoller
 	// 	log.Warningf(f.ctx, "can't deserialize protobuf payload: %v", err)
 	// 	return f
 	// }
-	var theArray [3]string
-	theArray[0] = "India"  // Assign a value to the first element
-	theArray[1] = "Canada" // Assign a value to the second element
-	theArray[2] = "Japan"
+	// var theArray [3]string
+	// theArray[0] = "India"  // Assign a value to the first element
+	// theArray[1] = "Canada" // Assign a value to the second element
+	// theArray[2] = "Japan"
 	if rslt, err := ffjson.Marshal(logData); err == nil { // TODO : Fix this
 		// if rslt, err := json.Marshal(theArray); err == nil {
 		jsonMsg = rslt
@@ -702,7 +703,7 @@ func LogJsonMsg(f *GcsGzFileRoller, msg []byte) {
 		}
 	}
 	(f.fw).Write(msg)
-	(f.fw).WriteString("TESTING \n") // TEST :
+	(f.fw).WriteString("\n")
 	f.IncrementByteCount(len(msg) + NewLineBytes)
 	f.recordsWritten++
 	if DebugLogging {
@@ -804,32 +805,33 @@ func (d *DataLogger) RunDataTaskService() {
 		// log.Errorf(ctx, "failed to create client: %v", err) // TODO : Remove old code
 		return
 	}
+	/*
+		// f, err := os.Open("notes.txt")
+		// if err != nil {
+		// 	fmt.Println("TEST : Open notes Error ", err)
+		// }
+		// defer f.Close()
 
-	// f, err := os.Open("notes.txt")
-	// if err != nil {
-	// 	fmt.Println("TEST : Open notes Error ", err)
-	// }
-	// defer f.Close()
+			ctxtest, cancel := context.WithTimeout(ctx, time.Second*50)
+			defer cancel()
+			// fmt.Println("TEST : Test notes Start ", err)
+			// wc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/Test object!!").NewWriter(ctx)
+			// if _, err = io.Copy(wc, f); err != nil {
+			// 	fmt.Println("TEST : Open notes Error Copy ", err)
+			// }
+			// if err := wc.Close(); err != nil {
+			// 	fmt.Println("TEST : Open notes Error Close ", err)
+			// }
 
-	ctxtest, cancel := context.WithTimeout(ctx, time.Second*50)
-	defer cancel()
-	// fmt.Println("TEST : Test notes Start ", err)
-	// wc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/Test object!!").NewWriter(ctx)
-	// if _, err = io.Copy(wc, f); err != nil {
-	// 	fmt.Println("TEST : Open notes Error Copy ", err)
-	// }
-	// if err := wc.Close(); err != nil {
-	// 	fmt.Println("TEST : Open notes Error Close ", err)
-	// }
-
-	fmt.Println("TEST : Test bucket Start ")
-	wwc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/first-tests/Test bucket object!!").NewWriter(ctxtest)
-	// if _, err = io.Copy(wwc, f); err != nil {
-	// 	fmt.Println("TEST : Test bucket Error Copy ", err)
-	// }
-	if err := wwc.Close(); err != nil {
-		fmt.Println("TEST : Test bucket Error Close ", err)
-	}
+			fmt.Println("TEST : Test bucket Start ")
+			wwc := client.Bucket(bucket).Object("newsiq-prebidserver-logs/first-tests/Test bucket object!!").NewWriter(ctxtest)
+			// if _, err = io.Copy(wwc, f); err != nil {
+			// 	fmt.Println("TEST : Test bucket Error Copy ", err)
+			// }
+			if err := wwc.Close(); err != nil {
+				fmt.Println("TEST : Test bucket Error Close ", err)
+			}
+	*/
 
 	/*
 		it := client.Bucket(bucket).Objects(ctx, nil)
