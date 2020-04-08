@@ -10,18 +10,5 @@
             }
         },
         "ver" : "2.0"
-    },
-    "device" :     {
-        "connectiontype" : 1,
-        "devtime" : 1574178141,
-        "h" : 896,
-        "ifa" : "00000000-0000-0000-0000-000000000000",
-        "lmt" : 0,
-        "make" : "Apple",
-        "model" : "iPhone",
-        "os" : "iOS",
-        "osv" : "13.0",
-        "pxratio" : 3,
-        "w" : 414
     }
 }
