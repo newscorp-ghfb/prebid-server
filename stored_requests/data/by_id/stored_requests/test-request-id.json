@@ -1,5 +1,8 @@
 {
     "id": "test-request-id",
+    "aliases" : {
+        "newsconnect" : "appnexus"
+    },
     "app" :     {
     	"brand" : "NewsCorp", 
         "bundle" : "com.prebid.DrPrebid",
