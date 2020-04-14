@@ -1,0 +1,14 @@
+{
+    "id": "test-request-id",
+    "app" :     {
+    	"brand" : "NewsCorp", 
+        "bundle" : "com.prebid.DrPrebid",
+        "ext" :         {
+            "prebid" :             {
+                "source" : "prebid-mobile",
+                "version" : "0.5.3"
+            }
+        },
+        "ver" : "2.0"
+    }
+}

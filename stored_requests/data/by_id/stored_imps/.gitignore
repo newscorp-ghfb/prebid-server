@@ -1,5 +1,0 @@
-# Ignore everything in this directory, except for this file
-*
-!.gitignore
-!test-imp-id.json
-!test-imp-id-2.json
