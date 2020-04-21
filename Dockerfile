@@ -25,12 +25,8 @@ COPY --from=build /app/prebid-server/ .
 COPY static static/
 COPY stored_requests/data stored_requests/data
 RUN apt-get update && \
-    apt-get install -y ca-certificates mtr curl gnupg2 && \
+    apt-get install -y ca-certificates mtr && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir -p /monitoring
-WORKDIR /monitoring
-RUN curl -sSO https://dl.google.com/cloudagents/install-monitoring-agent.sh
-RUN bash install-monitoring-agent.sh
 EXPOSE 8000
 EXPOSE 8080/tcp
 ENTRYPOINT ["/usr/local/bin/prebid-server"]
