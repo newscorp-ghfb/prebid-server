@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
+	"os"
 	"reflect"
 	"strings"
 	"text/template"
@@ -578,9 +579,10 @@ func SetupViper(v *viper.Viper, filename string) {
 	v.SetDefault("auction_timeouts_ms.default", 0)
 	v.SetDefault("auction_timeouts_ms.max", 0)
 	v.SetDefault("cache.scheme", "")
-	v.SetDefault("cache.host", "")
+	var pbCacheHost = os.Getenv("PBS_CACHE_HOST")
+	v.SetDefault("cache.host", pbCacheHost)
 	v.SetDefault("cache.query", "")
-	v.SetDefault("cache.expected_millis", 10)
+	v.SetDefault("cache.expected_millis", 300)
 	v.SetDefault("cache.default_ttl_seconds.banner", 0)
 	v.SetDefault("cache.default_ttl_seconds.video", 0)
 	v.SetDefault("cache.default_ttl_seconds.native", 0)
