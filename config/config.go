@@ -578,7 +578,7 @@ func SetupViper(v *viper.Viper, filename string) {
 	v.SetDefault("status_response", "")
 	v.SetDefault("auction_timeouts_ms.default", 0)
 	v.SetDefault("auction_timeouts_ms.max", 0)
-	v.SetDefault("cache.scheme", "https")
+	v.SetDefault("cache.scheme", "https:")
 	var pbCacheHost = os.Getenv("PBS_CACHE_HOST")
 	// var pbCacheHost = os.Getenv("PBS_CACHE_ENDPOINT")
 
