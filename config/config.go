@@ -579,7 +579,9 @@ func SetupViper(v *viper.Viper, filename string) {
 	v.SetDefault("auction_timeouts_ms.default", 0)
 	v.SetDefault("auction_timeouts_ms.max", 0)
 	v.SetDefault("cache.scheme", "")
-	var pbCacheHost = os.Getenv("PBS_CACHE_HOST")
+	// var pbCacheHost = os.Getenv("PBS_CACHE_HOST")
+	var pbCacheHost = os.Getenv("PBS_CACHE_ENDPOINT")
+
 	v.SetDefault("cache.host", pbCacheHost)
 	v.SetDefault("cache.query", "")
 	v.SetDefault("cache.expected_millis", 300)
