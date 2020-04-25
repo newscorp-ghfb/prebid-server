@@ -1,12 +1,12 @@
 {
-    "id": "test-request-id",
+    "id": "nypost-mobile-ios",
     "app" :     {
-    	"brand" : "NewsCorp", 
-        "bundle" : "com.prebid.DrPrebid",
+    	"brand" : "NYPost", 
+        "bundle" : "com.nypost.iphone",
         "ext" :         {
             "prebid" :             {
-                "source" : "prebid-mobile",
-                "version" : "0.5.3"
+                "source" : "prebid-mobile-ios",
+                "version" : "1.6"
             }
         },
         "ver" : "2.0"
