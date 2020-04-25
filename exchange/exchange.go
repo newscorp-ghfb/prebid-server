@@ -94,7 +94,6 @@ func NewExchange(client *http.Client, cache prebid_cache_client.Client, cfg *con
 	e.enforceCCPA = cfg.CCPA.Enforce
 	e.dataLogger = newsiq.InitDataLogger()
 	e.dataLogger.RunDataTaskService()
-	// e.dataLogger.StartDataTaskWorker() // TODO : Remove old code
 	return e
 }
 
