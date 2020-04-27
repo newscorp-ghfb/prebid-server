@@ -19,7 +19,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: prebid-server
-        image: gcr.io/newscorp-newsiq/prebid-server:latest
+        image: gcr.io/newscorp-newsiq-dev/prebid-cloudops/prebid-server:latest
         env:
         - name: GUNICORN_CMD_ARGS
           value: --forwarded-allow-ips=*
@@ -44,11 +44,26 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.name
+        - name: PBS_CACHE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: prebid-secrets
+              key: prebid_cache_host
+        - name: PBS_CACHE_PORT
+          valueFrom:
+            secretKeyRef:
+              name: prebid-secrets
+              key: prebid_cache_port
+        - name: PBS_CACHE_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: prebid-secrets
+              key: prebid_cache_endpoint
         - name: PBS_PROJECT_NAME
           valueFrom:
             secretKeyRef:
               name: prebid-secrets
-              key: project-name
+              key: project-name                    
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /secrets/config/prebid-service-account              
         volumeMounts:
