@@ -67,8 +67,7 @@ kubectl --namespace=prebid create secret generic prebid-secrets \
     --from-file=prebid_cache_host=.secrets-repo-${ENV}/kubernetes/prebid_cache_host \
     --from-file=prebid_cache_port=.secrets-repo-${ENV}/kubernetes/prebid_cache_port \
     --from-file=prebid_cache_endpoint=.secrets-repo-${ENV}/kubernetes/prebid_cache_endpoint \
-    --dry-run -o yaml | kubectl apply -f -    
-    --dry-run -o yaml | kubectl apply -f -  
+    --dry-run -o yaml | kubectl apply -f -
 
 echo "Update influxdb-secrets..."
 
