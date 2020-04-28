@@ -68,5 +68,16 @@ kubectl --namespace=prebid create secret generic prebid-secrets \
     --from-file=prebid_cache_port=.secrets-repo-${ENV}/kubernetes/prebid_cache_port \
     --from-file=prebid_cache_endpoint=.secrets-repo-${ENV}/kubernetes/prebid_cache_endpoint \
     --dry-run -o yaml | kubectl apply -f -    
+    --dry-run -o yaml | kubectl apply -f -  
+
+echo "Update influxdb-secrets..."
+
+kubectl --namespace=prebid create secret generic influxdb-secrets \
+    --from-file=database=.secrets-repo-${ENV}/influxdb/database \
+    --from-file=db_admin_password=.secrets-repo-${ENV}/influxdb/db_admin_password \
+    --from-file=db_admin_username=.secrets-repo-${ENV}/influxdb/db_admin_username \
+    --from-file=db_prebid_password=.secrets-repo-${ENV}/influxdb/db_prebid_password \
+    --from-file=db_prebid_username=.secrets-repo-${ENV}/influxdb/db_prebid_username \
+    --dry-run -o yaml | kubectl apply -f -   
 
 echo "Done."
