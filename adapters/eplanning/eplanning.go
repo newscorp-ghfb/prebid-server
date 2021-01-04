@@ -13,6 +13,7 @@ import (
 
 	"github.com/mxmCherry/openrtb"
 	"github.com/prebid/prebid-server/adapters"
+	"github.com/prebid/prebid-server/config"
 	"github.com/prebid/prebid-server/errortypes"
 	"github.com/prebid/prebid-server/openrtb_ext"
 
@@ -37,7 +38,6 @@ type cleanNameStep struct {
 }
 
 type EPlanningAdapter struct {
-	http    *adapters.HTTPAdapter
 	URI     string
 	testing bool
 }
@@ -104,25 +104,28 @@ func (adapter *EPlanningAdapter) MakeRequests(request *openrtb.BidRequest, reqIn
 		}
 	}
 
-	var pageURL string
+	pageURL := defaultPageURL
 	if request.Site != nil && request.Site.Page != "" {
 		pageURL = request.Site.Page
-	} else {
-		pageURL = defaultPageURL
 	}
 
-	var pageDomain string
-	if request.Site != nil && request.Site.Domain != "" {
-		pageDomain = request.Site.Domain
-	} else {
-		pageDomain = defaultPageURL
+	pageDomain := defaultPageURL
+	if request.Site != nil {
+		if request.Site.Domain != "" {
+			pageDomain = request.Site.Domain
+		} else if request.Site.Page != "" {
+			u, err := url.Parse(request.Site.Page)
+			if err != nil {
+				errors = append(errors, err)
+				return nil, errors
+			}
+			pageDomain = u.Hostname()
+		}
 	}
 
-	var requestTarget string
+	requestTarget := pageDomain
 	if request.App != nil && request.App.Bundle != "" {
 		requestTarget = request.App.Bundle
-	} else {
-		requestTarget = pageDomain
 	}
 
 	uriObj, err := url.Parse(adapter.URI)
@@ -314,12 +317,11 @@ func (adapter *EPlanningAdapter) MakeBids(internalRequest *openrtb.BidRequest, e
 	return bidResponse, nil
 }
 
-func NewEPlanningBidder(client *http.Client, endpoint string) *EPlanningAdapter {
-	adapter := &adapters.HTTPAdapter{Client: client}
-
-	return &EPlanningAdapter{
-		http:    adapter,
-		URI:     endpoint,
+// Builder builds a new instance of the EPlanning adapter for the given bidder with the given config.
+func Builder(bidderName openrtb_ext.BidderName, config config.Adapter) (adapters.Bidder, error) {
+	bidder := &EPlanningAdapter{
+		URI:     config.Endpoint,
 		testing: false,
 	}
+	return bidder, nil
 }
